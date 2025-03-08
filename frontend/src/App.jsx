@@ -5,10 +5,33 @@ function App() {
   const [input, setInput] = useState("");
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) return; // Prevent empty messages
+  
+    // Add user's message to the chat
     setMessages([...messages, { text: input, sender: "user" }]);
-    setInput("");
+  
+    try {
+      // Send the message to the backend
+      const response = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+  
+      const data = await response.json();
+  
+      // Add bot's response to the chat
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: data.reply, sender: "bot" },
+      ]);
+    } catch (error) {
+      console.error("Error communicating with the backend:", error);
+    }
+  
+    setInput(""); // Clear input field after sending
   };
+  
 
   return (
     <div className="flex flex-col items-center h-screen bg-gray-900 text-white">
