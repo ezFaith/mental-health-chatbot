@@ -12,11 +12,12 @@ function App() {
   
     try {
       // Send the message to the backend
-      const response = await fetch("https://mental-health-chatbot-rs8o.onrender.com", {
+      const response = await fetch("https://mental-health-chatbot-rs8o.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
       });
+      
   
       const data = await response.json();
   
