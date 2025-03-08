@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    setMessages([...messages, { text: input, sender: "user" }]);
+    setInput("");
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex flex-col items-center h-screen bg-gray-900 text-white">
+      <h1 className="text-2xl font-bold my-4">Mental Health Chatbot</h1>
+      <div className="w-full max-w-lg p-4 bg-gray-800 rounded-lg h-96 overflow-y-auto">
+        {messages.map((msg, index) => (
+          <p key={index} className={`text-${msg.sender === "user" ? "right" : "left"}`}>
+            {msg.text}
+          </p>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <input
+        className="mt-4 p-2 w-full max-w-lg border border-gray-500 rounded"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Type your message..."
+      />
+      <button onClick={sendMessage} className="mt-2 p-2 bg-blue-500 rounded">
+        Send
+      </button>
+    </div>
+  );
 }
 
-export default App
+export default App;
