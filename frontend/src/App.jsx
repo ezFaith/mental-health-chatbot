@@ -75,8 +75,17 @@ export default function App() {
       </div>
 
       <footer className="footer">
-        Made by <strong>Dipankar Saha</strong> ❤️
-      </footer>
+  Made by <strong>Dipankar Saha</strong> ❤️
+  <div className="social-links">
+    <a href="https://www.linkedin.com/in/dipankarsaha2001/" target="_blank" rel="noopener noreferrer">
+      <i className="fab fa-linkedin"></i>
+    </a>
+    <a href="https://github.com/ezFaith" target="_blank" rel="noopener noreferrer">
+      <i className="fab fa-github"></i>
+    </a>
+  </div>
+</footer>
+
     </div>
   );
 }
