@@ -1,0 +1,212 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Theme Variables */
+[data-theme="dark"] {
+    --bg-color: #1e1e1e;
+    --text-color: white;
+    --header-bg: #007bff;
+    --chat-bg: #2a2a2a; /* Darker chat background */
+    --input-bg: #333;
+    --input-border: #007bff;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --footer-bg: #111;
+}
+
+[data-theme="light"] {
+    --bg-color: white;
+    --text-color: black;
+    --header-bg: #f3f4f6;
+    --chat-bg: #ffffff;
+    --input-bg: #ddd;
+    --input-border: #007bff;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --footer-bg: #f1f1f1;
+}
+
+/* Body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Chat Container */
+.chat-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--chat-bg); /* Updated to change with theme */
+    transition: background 0.3s ease-in-out;
+}
+
+/* Toggle Mode Button */
+.toggle-mode {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle-mode:hover {
+    transform: scale(1.1);
+}
+
+/* Header */
+header {
+    background: var(--header-bg);
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Chat Box */
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    width: 90%;
+    max-width: 600px;
+    height: 60vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+    background: var(--chat-bg); /* Now dynamically changes */
+    border-radius: 10px;
+}
+
+/* Custom Scrollbar */
+.chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Chat Messages */
+.chat-message {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 80%;
+    font-size: 1rem;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.chat-message.bot {
+    background: #007bff;
+    color: white;
+    align-self: flex-start;
+}
+
+.chat-message.user {
+    background: #4caf50;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: var(--input-bg);
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.2s;
+    border: 2px solid transparent;
+}
+
+.chat-input input:focus {
+    border: 2px solid var(--input-border);
+}
+
+/* Send Button */
+.chat-input button {
+    background: var(--button-bg);
+    border: none;
+    padding: 14px 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: white;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-input button i {
+    font-size: 1.4rem;
+}
+
+.chat-input button:hover {
+    background: var(--button-hover);
+}
+
+/* Footer */
+.footer {
+    width: 100%;
+    background: var(--footer-bg);
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

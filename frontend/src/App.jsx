@@ -1,60 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { marked } from "marked"; // Markdown support
+import "./styles.css";
 
-function App() {
-  const [messages, setMessages] = useState([]);
+export default function App() {
   const [input, setInput] = useState("");
+  const [chat, setChat] = useState([
+    { sender: "bot", text: "Hello! How can I support you today? 😊" }
+  ]);
+  const [theme, setTheme] = useState("dark");
+
+  const chatBoxRef = useRef(null); // To auto-scroll
 
   const sendMessage = async () => {
-    if (!input.trim()) return; // Prevent empty messages
-  
-    // Add user's message to the chat
-    setMessages([...messages, { text: input, sender: "user" }]);
-  
+    if (!input.trim()) return;
+
+    const userMessage = { sender: "user", text: input };
+    setChat((prevChat) => [...prevChat, userMessage]);
+    setInput(""); // Clear input box after sending
+
     try {
-      // Send the message to the backend
       const response = await fetch("https://mental-health-chatbot-rs8o.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: input })
       });
-      
-  
+
       const data = await response.json();
-  
-      // Add bot's response to the chat
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: data.reply, sender: "bot" },
-      ]);
+      const botMessage = { sender: "bot", text: data.reply };
+      setChat((prevChat) => [...prevChat, botMessage]);
     } catch (error) {
-      console.error("Error communicating with the backend:", error);
+      console.error("Error fetching chatbot response:", error);
+      setChat((prevChat) => [...prevChat, { sender: "bot", text: "Oops! Something went wrong. Try again later." }]);
     }
-  
-    setInput(""); // Clear input field after sending
   };
-  
+
+  useEffect(() => {
+    // Auto-scroll to the bottom when new messages are added
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chat]);
 
   return (
-    <div className="flex flex-col items-center h-screen bg-gray-900 text-white">
-      <h1 className="text-2xl font-bold my-4">Mental Health Chatbot</h1>
-      <div className="w-full max-w-lg p-4 bg-gray-800 rounded-lg h-96 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <p key={index} className={`text-${msg.sender === "user" ? "right" : "left"}`}>
-            {msg.text}
-          </p>
+    <div className="chat-container" data-theme={theme}>
+      {/* Light/Dark Mode Toggle - Fixed at Top Right */}
+      <button className="toggle-mode" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        {theme === "dark" ? "🌞" : "🌙"}
+      </button>
+
+      <header>
+        <h1>🧠 Mental Health Chatbot</h1>
+      </header>
+
+      <div className="chat-box" ref={chatBoxRef}>
+        {chat.map((msg, index) => (
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            {/* Render Markdown formatted messages */}
+            <p dangerouslySetInnerHTML={{ __html: marked(msg.text) }}></p>
+          </div>
         ))}
       </div>
-      <input
-        className="mt-4 p-2 w-full max-w-lg border border-gray-500 rounded"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type your message..."
-      />
-      <button onClick={sendMessage} className="mt-2 p-2 bg-blue-500 rounded">
-        Send
-      </button>
+
+      <div className="chat-input">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+        />
+        <button onClick={sendMessage}>
+          <i className="fas fa-paper-plane"></i> {/* Updated to ChatGPT-style arrow icon */}
+        </button>
+      </div>
+
+      <footer className="footer">
+        Made by <strong>Dipankar Saha</strong> ❤️
+      </footer>
     </div>
   );
 }
-
-export default App;
