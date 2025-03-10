@@ -1,5 +1,55 @@
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
+.notice-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.notice-box {
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+    color: white;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.4rem;
+}
+
+.notice-box h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.notice-box p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.notice-box button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.notice-box button:hover {
+    background: #0056b3;
+}
+
+
 /* General Styles */
 * {
     margin: 0;
